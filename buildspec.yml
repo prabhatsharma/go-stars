@@ -11,12 +11,12 @@ phases:
       - echo Building the Docker image...          
       - docker build -t go-stars:latest .
       - docker tag go-stars:latest public.ecr.aws/prabhat/go-stars:latest
-      - docker tag go-stars:latest public.ecr.aws/prabhat/go-stars:v$CODEBUILD_WEBHOOK_HEAD_REF      
+      - docker tag go-stars:latest public.ecr.aws/prabhat/go-stars:v$CODEBUILD_WEBHOOK_TRIGGER      
   post_build:
     commands:
       - echo Build completed on `date`
       - echo Pushing the Docker image...
       - docker push public.ecr.aws/prabhat/go-stars:latest
-      - docker push public.ecr.aws/prabhat/go-stars:v$CODEBUILD_WEBHOOK_HEAD_REF
+      - docker push public.ecr.aws/prabhat/go-stars:v$CODEBUILD_WEBHOOK_TRIGGER
 
       
