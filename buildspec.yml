@@ -10,13 +10,14 @@ phases:
       - echo Build started on `date`
       - echo Building the Docker image...          
       - docker build -t go-stars:latest .
+      - GIT_TAG="$(git describe --tags --abbrev=0)"
       - docker tag go-stars:latest public.ecr.aws/prabhat/go-stars:latest
-      - docker tag go-stars:latest public.ecr.aws/prabhat/go-stars:v$CODEBUILD_WEBHOOK_TRIGGER      
+      - docker tag go-stars:latest public.ecr.aws/prabhat/go-stars:v$GIT_TAG      
   post_build:
     commands:
       - echo Build completed on `date`
       - echo Pushing the Docker image...
       - docker push public.ecr.aws/prabhat/go-stars:latest
-      - docker push public.ecr.aws/prabhat/go-stars:v$CODEBUILD_WEBHOOK_TRIGGER
+      - docker push public.ecr.aws/prabhat/go-stars:v$GIT_TAG
 
       
