@@ -1,0 +1,22 @@
+version: 0.2
+
+phases:
+  pre_build:
+    commands:
+      - echo Logging in to Amazon ECR...
+      - aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin public.ecr.aws/prabhat
+  build:
+    commands:
+      - echo Build started on `date`
+      - echo Building the Docker image...          
+      - docker build -t go-stars:latest .
+      - docker tag go-stars:latest public.ecr.aws/prabhat/go-stars:latest
+      - docker tag go-stars:latest public.ecr.aws/prabhat/go-stars:v$CODEBUILD_SOURCE_VERSION      
+  post_build:
+    commands:
+      - echo Build completed on `date`
+      - echo Pushing the Docker image...
+      - docker push public.ecr.aws/prabhat/go-stars:latest
+      - docker push public.ecr.aws/prabhat/go-stars:v$CODEBUILD_SOURCE_VERSION
+
+      

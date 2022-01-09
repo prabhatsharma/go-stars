@@ -11,8 +11,8 @@ provider "aws" {
   region = "us-west-2"
 }
 
-resource "aws_codebuild_project" "go-stars" {
-  name          = "go-stars"
+resource "aws_codebuild_project" "gostars" {
+  name          = "gostars"
   description   = "go-stars search engine"
   service_role  = "arn:aws:iam::776727604074:role/service-role/codebuild"
   # type          = "BUILD"
@@ -35,7 +35,7 @@ resource "aws_codebuild_project" "go-stars" {
 
     environment_variable {
       name  = "GITHUB_TOKEN"
-      value = "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."
+      value = "GITHUB_TOKEN"
       type  = "PARAMETER_STORE"
     }
   }
@@ -57,8 +57,8 @@ resource "aws_codebuild_project" "go-stars" {
 #   source_version = "master"
 }
 
-resource "aws_codebuild_webhook" "go-stars" {
-  project_name = "go-stars"
+resource "aws_codebuild_webhook" "gostars" {
+  project_name = "gostars"
   build_type   = "BUILD"
   filter_group {
     filter {
@@ -71,5 +71,9 @@ resource "aws_codebuild_webhook" "go-stars" {
       pattern = "^refs/tags/.*"
     }
   }
+
+  depends_on = [
+    aws_codebuild_project.gostars,
+  ]
 }
 
